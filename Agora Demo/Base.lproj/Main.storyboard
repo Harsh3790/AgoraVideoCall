@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="amD-HS-lzL">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Start Video CallVC-->
+        <scene sceneID="6vr-3A-Bhu">
+            <objects>
+                <viewController storyboardIdentifier="StartVideoCallVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cJX-8D-nm4" customClass="StartVideoCallVC" customModule="Agora_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8Km-3N-elC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v4a-a5-f81" customClass="AnimatableButton" customModule="IBAnimatable">
+                                <rect key="frame" x="121.66666666666669" y="413.66666666666669" width="150" height="50"/>
+                                <color key="backgroundColor" systemColor="tintColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Ayl-gg-dKF"/>
+                                    <constraint firstAttribute="width" constant="150" id="o3d-FP-ZF6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Join Call">
+                                    <color key="titleColor" systemColor="labelColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="tapStartVideoCall:" destination="cJX-8D-nm4" eventType="touchUpInside" id="pyi-qU-XXO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ct4-at-6U1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="v4a-a5-f81" firstAttribute="centerY" secondItem="ct4-at-6U1" secondAttribute="centerY" id="QGb-xR-cNH"/>
+                            <constraint firstItem="v4a-a5-f81" firstAttribute="centerX" secondItem="ct4-at-6U1" secondAttribute="centerX" id="aWw-G3-YsM"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="1CC-aM-Upq"/>
+                    <connections>
+                        <outlet property="startVCBtn" destination="v4a-a5-f81" id="egx-6C-Szk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QJc-Fu-YnP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1450" y="-59"/>
+        </scene>
+        <!--Video CallVC-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="VideoCallVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="VideoCallVC" customModule="Agora_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feX-uS-3Te" customClass="AnimatableView" customModule="IBAnimatable">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b9h-3f-Ahf" customClass="AnimatableView" customModule="IBAnimatable">
+                                <rect key="frame" x="160" y="555" width="233" height="263"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="4nE-ip-iYY">
+                                <rect key="frame" x="86.666666666666686" y="758" width="220" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GHT-GZ-W8U" customClass="AnimatableButton" customModule="IBAnimatable">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="2Bm-8X-it6"/>
+                                            <constraint firstAttribute="width" secondItem="GHT-GZ-W8U" secondAttribute="height" multiplier="1:1" id="d9K-me-aLK"/>
+                                        </constraints>
+                                        <color key="tintColor" systemColor="labelColor"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="speaker.fill" catalog="system"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="tapSpeakerBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E89-Px-xOe"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hqV-gS-8d3" customClass="AnimatableButton" customModule="IBAnimatable">
+                                        <rect key="frame" x="59.999999999999986" y="0.0" width="40" height="40"/>
+                                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                                        <color key="tintColor" systemColor="labelColor"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="phone.fill" catalog="system">
+                                            <color key="titleColor" systemColor="labelColor"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="tapCallEndBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0fe-DS-ibv"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rx1-eg-j6K" customClass="AnimatableButton" customModule="IBAnimatable">
+                                        <rect key="frame" x="120" y="0.0" width="40" height="40"/>
+                                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="tintColor" systemColor="labelColor"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="microphone.fill" catalog="system"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="tapMicrophoneBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IcN-4a-i3m"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z90-XB-hzu" customClass="AnimatableButton" customModule="IBAnimatable">
+                                        <rect key="frame" x="180" y="0.0" width="40" height="40"/>
+                                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                                        <color key="tintColor" systemColor="labelColor"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="camera.shutter.button.fill" catalog="system"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="tapCameraOnOffBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Oea-Od-16E"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OD9-jS-LAk" customClass="AnimatableButton" customModule="IBAnimatable">
+                                <rect key="frame" x="313" y="109" width="50" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="OD9-jS-LAk" secondAttribute="height" multiplier="1:1" id="AFh-R7-aPT"/>
+                                    <constraint firstAttribute="height" constant="50" id="lB1-bv-YCd"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="arrow.trianglehead.2.clockwise.rotate.90.camera.fill" catalog="system"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="25"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="tapChangeCameraBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ns3-uB-cnn"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.3.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sYv-PF-f7V" customClass="AnimatableImageView" customModule="IBAnimatable">
+                                <rect key="frame" x="241.66666666666663" y="653.33333333333326" width="70" height="68"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="cWH-Y7-b0B"/>
+                                    <constraint firstAttribute="width" secondItem="sYv-PF-f7V" secondAttribute="height" multiplier="1:1" id="sks-WO-ZsL"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="35"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" systemColor="labelColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.3.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="a3a-x8-hlX" customClass="AnimatableImageView" customModule="IBAnimatable">
+                                <rect key="frame" x="96.666666666666686" y="340.33333333333337" width="200" height="198.00000000000011"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="a3a-x8-hlX" secondAttribute="height" multiplier="1:1" id="vp7-c5-mzr"/>
+                                    <constraint firstAttribute="height" constant="200" id="zDw-My-lvf"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="100"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" systemColor="labelColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LS1-QZ-i1d">
+                                <rect key="frame" x="173.66666666666666" y="79" width="45.666666666666657" height="21.666666666666671"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="feX-uS-3Te" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="1bU-95-WX5"/>
+                            <constraint firstItem="LS1-QZ-i1d" firstAttribute="top" secondItem="feX-uS-3Te" secondAttribute="top" constant="20" id="5Ii-Pf-nq0"/>
+                            <constraint firstItem="b9h-3f-Ahf" firstAttribute="width" secondItem="feX-uS-3Te" secondAttribute="width" multiplier="0.592875" id="Ajn-mw-afZ"/>
+                            <constraint firstItem="sYv-PF-f7V" firstAttribute="centerX" secondItem="b9h-3f-Ahf" secondAttribute="centerX" id="B9d-b2-85r"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OD9-jS-LAk" secondAttribute="trailing" constant="30" id="Cwy-FL-eMD"/>
+                            <constraint firstItem="feX-uS-3Te" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NbE-qM-dvI"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="feX-uS-3Te" secondAttribute="bottom" id="OOY-Qb-SIN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="feX-uS-3Te" secondAttribute="trailing" id="PF7-LL-SaA"/>
+                            <constraint firstItem="LS1-QZ-i1d" firstAttribute="centerX" secondItem="feX-uS-3Te" secondAttribute="centerX" id="Qr3-LX-wCu"/>
+                            <constraint firstItem="a3a-x8-hlX" firstAttribute="centerX" secondItem="feX-uS-3Te" secondAttribute="centerX" id="TEL-Cy-Pob"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="4nE-ip-iYY" secondAttribute="bottom" constant="20" id="VYn-PH-T3L"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="b9h-3f-Ahf" secondAttribute="bottom" id="aoG-js-GOU"/>
+                            <constraint firstItem="sYv-PF-f7V" firstAttribute="centerY" secondItem="b9h-3f-Ahf" secondAttribute="centerY" id="dgb-gU-MyU"/>
+                            <constraint firstItem="b9h-3f-Ahf" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fV8-c3-lu5"/>
+                            <constraint firstItem="4nE-ip-iYY" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="gDg-de-XNV"/>
+                            <constraint firstItem="a3a-x8-hlX" firstAttribute="centerY" secondItem="feX-uS-3Te" secondAttribute="centerY" id="hrH-Jf-u8n"/>
+                            <constraint firstItem="b9h-3f-Ahf" firstAttribute="height" secondItem="feX-uS-3Te" secondAttribute="height" multiplier="0.346509" id="p9W-yT-9KM"/>
+                            <constraint firstItem="OD9-jS-LAk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="zpE-eE-eRo"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="lblTimer" destination="LS1-QZ-i1d" id="uiP-um-ld5"/>
+                        <outlet property="localImage" destination="sYv-PF-f7V" id="75A-oo-eIN"/>
+                        <outlet property="localView" destination="b9h-3f-Ahf" id="fy9-yj-Vmk"/>
+                        <outlet property="remoteImage" destination="a3a-x8-hlX" id="vTe-aL-AOV"/>
+                        <outlet property="remoteView" destination="feX-uS-3Te" id="D37-gY-IXf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2283.2061068702287" y="-59.154929577464792"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="b7z-sa-k09">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="amD-HS-lzL" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="brW-Xr-ilG">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="cJX-8D-nm4" kind="relationship" relationship="rootViewController" id="LNT-y4-ANm"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rQ2-KL-dOn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="608.39694656488552" y="-59.154929577464792"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="arrow.trianglehead.2.clockwise.rotate.90.camera.fill" catalog="system" width="128" height="93"/>
+        <image name="camera.shutter.button.fill" catalog="system" width="128" height="108"/>
+        <image name="microphone.fill" catalog="system" width="110" height="128"/>
+        <image name="person.3.fill" catalog="system" width="128" height="66"/>
+        <image name="phone.fill" catalog="system" width="128" height="114"/>
+        <image name="speaker.fill" catalog="system" width="128" height="125"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tintColor">
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
