@@ -13,7 +13,7 @@ class PushKitManager: NSObject {
     static let shared = PushKitManager()
     
     private let pushRegistry: PKPushRegistry
-    var callManager: CallManager?
+    var callManager = CallManager.shared
     var voipToken: String = ""
     var onTokenReceived: ((String) -> ())?
     
@@ -42,11 +42,14 @@ extension PushKitManager: PKPushRegistryDelegate {
                       completion: @escaping () -> Void) {
         print("📲 VoIP Push received: \(payload.dictionaryPayload)")
         guard let caller = payload.dictionaryPayload["callerName"] as? String,
-              let channelName = payload.dictionaryPayload["channelName"] as? String else { return }
-        if callManager == nil {
-            callManager = CallManager()
+              let channelName = payload.dictionaryPayload["channelName"] as? String,
+              let status = payload.dictionaryPayload["status"] as? String else { return }
+        UserDefaults.standard.set(2, forKey: "localUserID")
+        if status == "rejected"{
+            self.callManager.endCall()
+        }else {
+            self.callManager.reportIncomingCall(from: caller, channelName: channelName)
         }
-        self.callManager?.reportIncomingCall(from: caller, channelName: channelName)
         completion()
     }
 }

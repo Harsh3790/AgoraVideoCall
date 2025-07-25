@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pushKit.onTokenReceived = { token in
             print("🎯 Got VoIP token in AppDelegate: \(token)")
         }
+        UserDefaults.standard.set(1, forKey: "localUserID")
         return true
     }
     

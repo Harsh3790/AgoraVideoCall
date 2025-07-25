@@ -16,9 +16,8 @@ class CallManager: NSObject {
     
     private var provider: CXProvider!
     private var callController = CXCallController()
-    var agoraManager: AgoraManager?
+    var agoraManager = AgoraManager.shared
     var currentChannelName: String?
-    var callUUID: UUID?
     
     override init() {
         let config = CXProviderConfiguration(localizedName: "Agora VideoCall")
@@ -32,21 +31,16 @@ class CallManager: NSObject {
         provider.setDelegate(self, queue: nil)
     }
 
-//    func startCall(channelName: String) {
-//        let handle = CXHandle(type: .generic, value: channelName)
-//        let uuid = UUID()
-//        self.callUUID = uuid 
-//        let action = CXStartCallAction(call: uuid, handle: handle)
-//        let transaction = CXTransaction(action: action)
-//        requestTransaction(transaction)
-//    }
+    func startCall(channelName: String) {
+        let handle = CXHandle(type: .generic, value: channelName)
+        let uuid = UUID()
+        let action = CXStartCallAction(call: uuid, handle: handle)
+        let transaction = CXTransaction(action: action)
+        requestTransaction(transaction)
+    }
 
     func endCall() {
-        print("✅ callUUID: \(String(describing: callUUID))")
-        guard let uuid = callUUID else {
-            print("❌ No active call UUID to end.")
-            return
-        }
+        guard let uuid = callController.callObserver.calls.first?.uuid else { return }
         let action = CXEndCallAction(call: uuid)
         let transaction = CXTransaction(action: action)
         requestTransaction(transaction)
@@ -60,9 +54,7 @@ class CallManager: NSObject {
         update.localizedCallerName = caller
         update.hasVideo = true
         let uuid = UUID()
-        self.callUUID = uuid
-        print("✅ callUUID: \(String(describing: callUUID))")
-        provider.reportNewIncomingCall(with: self.callUUID! , update: update) { error in
+        provider.reportNewIncomingCall(with: uuid , update: update) { error in
             if let error = error {
                 print("❌ CallKit report error: \(error)")
             } else {
@@ -81,25 +73,6 @@ class CallManager: NSObject {
         }
     }
     
-    func presentVideoCallScreen(completion: (() -> Void)? = nil) {
-        guard let rootVC = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController else {
-            print("❌ Couldn't get root view controller")
-            return
-        }
-        if rootVC.presentedViewController is VideoCallVC {
-            print("ℹ️ VideoCallVC is already presented")
-            return
-        }
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let videoCallVC = storyboard.instantiateViewController(withIdentifier: "VideoCallVC") as? VideoCallVC {
-            videoCallVC.modalPresentationStyle = .fullScreen
-            videoCallVC.modalTransitionStyle = .crossDissolve
-            rootVC.present(videoCallVC, animated: true, completion: {
-                completion?()
-            })
-        }
-    }
-    
     func dismissVideoCallScreen() {
         guard let rootVC = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController else {
             print("❌ Couldn't get root view controller")
@@ -107,7 +80,6 @@ class CallManager: NSObject {
         }
 
         if let presented = rootVC.presentedViewController as? VideoCallVC {
-            self.agoraManager?.leaveChannel()
             presented.dismiss(animated: true, completion: {
                 print("✅ VideoCallVC dismissed")
             })
@@ -136,35 +108,11 @@ extension CallManager: CXProviderDelegate{
     }
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         print("✅ didActivate: video session active")
-        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord,
-                                                         mode: .videoChat,
-                                                         options: [.allowBluetooth, .defaultToSpeaker])
-        try? AVAudioSession.sharedInstance().setActive(true)
-        
-        DispatchQueue.main.async {
-            self.presentVideoCallScreen { [weak self] in
-                // ✅ Only end CallKit after UI is on screen
-                guard let uuid = self?.callUUID else { return }
-                let callObserver = CXCallObserver()
-                let activeCalls = callObserver.calls
-                print("✅ callUUID: \(String(describing: self?.callUUID))")
-                print("📞 Active calls:", activeCalls.map { $0.uuid })
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    let endAction = CXEndCallAction(call: uuid)
-                    let transaction = CXTransaction(action: endAction)
-                    self?.callController.request(transaction) { error in
-                        if let error = error {
-                            print("❌ Failed to end CallKit: \(error)")
-                        } else {
-                            print("✅ CallKit call ended to hide system UI")
-                        }
-                    }
-                }
-            }
-        }
+        agoraManager.joinChannel(channelName: "harsh_Demo")
     }
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
         print("✅ didDeactivate: video session inactive")
+        agoraManager.leaveChannel()
         dismissVideoCallScreen()
     }
 }

@@ -14,7 +14,7 @@ class AgoraManager: NSObject {
 
     var agoraKit: AgoraRtcEngineKit!
     let appID = "ba67a60a8b3d4ab8b226d58433f14887"
-    let token: String = "007eJxTYDCcba9jvHhPiNL0O3dXXDvL6fkh8Y45j96Z6ui4uvm6gtcVGIyMjU0TLVItjIyMzU2Mjc0tzI2NjA1SLc1NjRJTTUwTuVMaMhoCGRlS3nxnYWSAQBCfiyEjsag4I94lNTefgQEAnEQgMA=="
+    let token: String = "007eJxTYJC4227I2OV3+RXb6i8it69Nb2/b/3LBlx5lQ7a4+1r5XqcUGJISzcwTzQwSLZKMU0wSkyySjIzMUkwtTIyN0wxNLCzMOZ43ZjQEMjJsPc7IxMgAgSA+F0NGYlFxRrxLam4+AwMAUZwiMg=="
     var channelName: String = "harsh_Demo"
     var closureRemoteView: ((UInt) -> ()) = {_ in}
     var closureRemoteViewOnOff: ((Bool) -> ()) = {_ in}
@@ -36,16 +36,48 @@ class AgoraManager: NSObject {
         agoraKit.muteLocalVideoStream(false)
         agoraKit.muteAllRemoteVideoStreams(false)
         agoraKit.setChannelProfile(.communication)
-        agoraKit.joinChannel(byToken: token, channelId: channelName, info: nil, uid: 2) { [weak self] _, _, _ in
+        agoraKit.joinChannel(byToken: token, channelId: channelName, info: nil, uid: 0) { [weak self] _, _, _ in
             guard let self = self else{ return }
-            print("✅ Joined channel: \(self.channelName)")
+            presentVideoCallScreen()
         }
     }
-
+    func presentVideoCallScreen() {
+        guard let rootVC = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController else {
+            print("❌ Couldn't get root view controller")
+            return
+        }
+        if rootVC.presentedViewController is VideoCallVC {
+            print("ℹ️ VideoCallVC is already presented")
+            return
+        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let videoCallVC = storyboard.instantiateViewController(withIdentifier: "VideoCallVC") as? VideoCallVC {
+            videoCallVC.modalPresentationStyle = .fullScreen
+            videoCallVC.modalTransitionStyle = .crossDissolve
+            rootVC.present(videoCallVC, animated: true, completion: nil)
+        }
+    }
+    
     func leaveChannel() {
         agoraKit.leaveChannel(nil)
         agoraKit.stopPreview()
         print("✅ Left channel")
+    }
+    
+    func switchCamera(){
+        agoraKit.switchCamera()
+    }
+    
+    func muteCall(isMute: Bool){
+        agoraKit.muteLocalAudioStream(isMute)
+    }
+    
+    func muteLocalVideoStream(isCameraOff: Bool){
+        agoraKit.muteLocalVideoStream(isCameraOff)
+    }
+    
+    func setEnableSpeakerphone(isSpeakerOff: Bool){
+        agoraKit.setEnableSpeakerphone(isSpeakerOff)
     }
 }
 
@@ -62,6 +94,7 @@ extension AgoraManager: AgoraRtcEngineDelegate {
     func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
         print("❌ Remote user left")
         self.closureCallLeft?()
+        leaveChannel()
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didVideoMuted muted: Bool, byUid uid: UInt) {

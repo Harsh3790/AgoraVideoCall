@@ -36,7 +36,8 @@ class StartVideoCallVC: UIViewController {
  "content-available": 1
  },
  "callerName": "Harsh",
- "channelName": "harsh_Demo"
+ "channelName": "harsh_Demo",
+ "status": "incoming" or "rejected"
  }' \
  --http2 \
  https://api.sandbox.push.apple.com:443/3/device/b9450d80ed8f81cb188259975146a8367bca89dc17e678f126b257b94bbebc3d

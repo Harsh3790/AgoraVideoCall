@@ -20,6 +20,8 @@ class VideoCallVC: UIViewController {
     @IBOutlet weak var lblTimer: UILabel!
     private let agora =  AgoraManager.shared
     private let callManager = CallManager.shared
+    private let pushKitManager = PushKitManager.shared
+    var user: remoteUserInfo!
     var callTimer: Timer?
     var totalSeconds = 0
     
@@ -28,12 +30,32 @@ class VideoCallVC: UIViewController {
         super.viewDidLoad()
         self.remoteImage.isHidden = false
         self.lblTimer.text = "Calling..."
-        agora.joinChannel(channelName: "harsh_Demo")
         setupLocalVideo(isLocalView: false)
+        setupAgoraClosures()
+      
+        user = remoteUserInfo(name: "Harsh", userID: 2, profilePic: "")
+        let userId = UserDefaults.standard.integer(forKey: "localUserID")
+        if user.userID != userId{
+            callManager.startCall(channelName: "harsh_Demo")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setupAgoraClosures()
+//        setupAgoraClosures()
+//        if callManager.agoraManager == nil {
+//            callManager.agoraManager = agora
+//        }
+//        if pushKitManager.callManager == nil {
+//            pushKitManager.callManager = callManager
+//        }
+//        user = remoteUserInfo(name: "Harsh", userID: 2, profilePic: "")
+//        let userId = UserDefaults.standard.integer(forKey: "localUserID")
+//        if user.userID != userId{
+//            callManager.startCall(channelName: "harsh_Demo")
+//        }
+//        else{
+//            callManager.agoraManager?.joinChannel(channelName: "harsh_Demo")
+//        }
     }
     
     deinit {
@@ -42,30 +64,30 @@ class VideoCallVC: UIViewController {
     }
     
     func setupAgoraClosures() {
-        agora.closureRemoteView = { [weak self] uid in
+        callManager.agoraManager.closureRemoteView = { [weak self] uid in
             guard let self = self else { return }
             let videoCanvas = AgoraRtcVideoCanvas()
             videoCanvas.uid = uid
             videoCanvas.view = self.remoteView
             videoCanvas.renderMode = .hidden
-            agora.agoraKit.setupRemoteVideo(videoCanvas)
+            callManager.agoraManager.agoraKit.setupRemoteVideo(videoCanvas)
             self.remoteImage.isHidden = true
             startCallTimer()
         }
-        agora.closureRemoteViewOnOff = { [weak self] muted in
+        callManager.agoraManager.closureRemoteViewOnOff = { [weak self] muted in
             guard let self = self else { return }
             let videoCanvas = AgoraRtcVideoCanvas()
             videoCanvas.view = muted ? nil : self.remoteView
             videoCanvas.renderMode = .hidden
             if !muted{
-                agora.agoraKit.setupRemoteVideo(videoCanvas)
+                callManager.agoraManager.agoraKit.setupRemoteVideo(videoCanvas)
             }
             self.remoteImage.isHidden = muted ? false : true
             self.remoteView.isHidden = muted ? true : false
             self.remoteView.backgroundColor = muted ? .systemGray3 : .clear
             print(self.remoteImage.isHidden)
         }
-        agora.closureCallLeft = { [weak self] in
+        callManager.agoraManager.closureCallLeft = { [weak self] in
             guard let self = self else { return }
             leftCall()
         }
@@ -85,7 +107,6 @@ class VideoCallVC: UIViewController {
     }
     
     func leftCall() {
-        agora.leaveChannel()
         callManager.endCall()
         callTimer?.invalidate()
         callTimer = nil
@@ -93,9 +114,9 @@ class VideoCallVC: UIViewController {
     }
     
     private func clearAgoraClosures() {
-        agora.closureRemoteView = { _ in }
-        agora.closureRemoteViewOnOff = { _ in }
-        agora.closureCallLeft = nil
+        callManager.agoraManager.closureRemoteView = { _ in }
+        callManager.agoraManager.closureRemoteViewOnOff = { _ in }
+        callManager.agoraManager.closureCallLeft = nil
     }
     
     func setupLocalVideo(isLocalView: Bool) {
@@ -103,8 +124,8 @@ class VideoCallVC: UIViewController {
         videoCanvas.uid = 0
         videoCanvas.view = isLocalView ? nil : localView
         videoCanvas.renderMode = .hidden
-        agora.agoraKit.setupLocalVideo(videoCanvas)
-        agora.agoraKit.startPreview()
+        callManager.agoraManager.agoraKit.setupLocalVideo(videoCanvas)
+        callManager.agoraManager.agoraKit.startPreview()
         localView.backgroundColor = isLocalView ? UIColor.systemGray3 : .clear
         localImage.isHidden = !isLocalView
     }
@@ -113,13 +134,13 @@ class VideoCallVC: UIViewController {
 //        let url = URL(string: "https://yourserver.com/agora/token")!
 //        var request = URLRequest(url: url)
 //        request.httpMethod = "POST"
-//        
+//
 //        let payload: [String: Any] = [
 //            "channelName": channel,
 //            "uid": userId,
 //            "role": "publisher"
 //        ]
-//        
+//
 //        request.httpBody = try? JSONSerialization.data(withJSONObject: payload)
 //        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 //
@@ -137,7 +158,7 @@ class VideoCallVC: UIViewController {
 //    }
     
     @IBAction func tapChangeCameraBtn(_ sender: UIButton) {
-        agora.agoraKit.switchCamera()
+        callManager.agoraManager.switchCamera()
     }
     @IBAction func tapCallEndBtn(_ sender: UIButton) {
         leftCall()
@@ -145,20 +166,26 @@ class VideoCallVC: UIViewController {
     @IBAction func tapMicrophoneBtn(_ sender: UIButton) {
         sender.isSelected.toggle()
         let isMuted = sender.isSelected
-        agora.agoraKit.muteLocalAudioStream(isMuted)
+        callManager.agoraManager.muteCall(isMute: isMuted)
         sender.setImage(UIImage(systemName: isMuted ? "microphone.slash.fill" : "microphone.fill"), for: .normal)
     }
     @IBAction func tapCameraOnOffBtn(_ sender: UIButton) {
         sender.isSelected.toggle()
         let isCameraOff = sender.isSelected
-        agora.agoraKit.muteLocalVideoStream(isCameraOff)
+        callManager.agoraManager.muteLocalVideoStream(isCameraOff: isCameraOff)
         setupLocalVideo(isLocalView: isCameraOff)
         sender.setImage(UIImage(systemName: isCameraOff ? "camera.badge.clock.fill" : "camera.shutter.button.fill"), for: .normal)
     }
     @IBAction func tapSpeakerBtn(_ sender: UIButton) {
         sender.isSelected.toggle()
         let isSpeakerOff = sender.isSelected
-        agora.agoraKit.setEnableSpeakerphone(isSpeakerOff)
+        callManager.agoraManager.setEnableSpeakerphone(isSpeakerOff: isSpeakerOff)
         sender.setImage(UIImage(systemName: isSpeakerOff ? "speaker.slash.fill" : "speaker.fill"), for: .normal)
     }
+}
+
+struct remoteUserInfo: Codable {
+    var name: String
+    var userID: Int
+    var profilePic: String
 }
